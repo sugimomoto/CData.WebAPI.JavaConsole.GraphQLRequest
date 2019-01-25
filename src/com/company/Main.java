@@ -6,6 +6,9 @@ import java.util.List;
 public class Main {
     public static final String url = "https://sampledbforjavawebapi.herokuapp.com/v1alpha1/graphql";
 
+    public static final String authHeaderName = "X-Hasura-Access-Key";
+    public static final String authHeaderValue = "XXXXXXXXXXX";
+
     public static void main(String[] args) throws Exception {
 
         String graphqlRequest = GraphQLSchema.query(query -> query.orders(
@@ -27,7 +30,7 @@ public class Main {
         RequestBody requestBody = RequestBody.create(MIMEType,"{\"query\": \"" + graphqlRequest + "\"}");
 
         Response response = client.newCall(
-                new Request.Builder().post(requestBody).url(url).build()
+                new Request.Builder().post(requestBody).addHeader(authHeaderName,authHeaderValue).url(url).build()
         ).execute();
 
         GraphQLSchema.QueryResponse queryResponse = GraphQLSchema.QueryResponse.fromJson(response.body().string());
